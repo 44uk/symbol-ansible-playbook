@@ -1,0 +1,5 @@
+---
+- name: Cleanup
+  include_tasks: "_{{ ansible_os_family }}.yml"
+  tags:
+    - cleanup

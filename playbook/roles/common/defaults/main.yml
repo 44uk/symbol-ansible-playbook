@@ -1,0 +1,13 @@
+---
+remove_packages:
+  - apport
+  - byobu
+  - ftp
+  - nano
+  - screen
+  - tmux
+  - telnet
+
+add_packages:
+  - curl
+  - python3-pip

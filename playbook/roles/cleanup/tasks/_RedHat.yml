@@ -1,0 +1,15 @@
+---
+- name: yum autoremove
+  yum:
+    autoremove: yes
+
+- name: yum clean all
+  command: yum clean all
+  args:
+    warn: no
+
+- name: Remove old kernels
+  command: package-cleanup --oldkernels --count=1
+
+# - name: Remove old kernels
+#   command: dnf remove --oldinstallonly --setopt installonly_limit=2 kernel

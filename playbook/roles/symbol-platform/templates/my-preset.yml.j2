@@ -1,0 +1,32 @@
+nodes:
+    -
+{% if symbol_platform_preset_nodes_host | default(false) %}
+        host: {{ symbol_platform_preset_nodes_host }}
+{% endif %}
+{% if symbol_platform_preset_nodes_friendlyName | default(false) %}
+        friendlyName: {{ symbol_platform_preset_nodes_friendlyName }}
+{% endif %}
+
+{% if symbol_paltform_preset_nodes_mainPrivateKey | default(false) %}
+        mainPrivateKey: {{ symbol_paltform_preset_nodes_mainPrivateKey }}
+{% endif %}
+{% if symbol_paltform_preset_nodes_transportPrivateKey | default(false) %}
+        transportPrivateKey: {{ symbol_paltform_preset_nodes_transportPrivateKey }}
+{% endif %}
+{% if symbol_paltform_preset_nodes_remotePrivateKey | default(false) %}
+        remotePrivateKey: {{ symbol_paltform_preset_nodes_remotePrivateKey }}
+{% endif %}
+{% if symbol_paltform_preset_nodes_vrfPrivateKey | default(false) %}
+        vrfPrivateKey: {{ symbol_paltform_preset_nodes_vrfPrivateKey }}
+{% endif %}
+
+        harvesting: {{ symbol_platform_preset_nodes_harvesting | default(false) }}
+        voting: {{ symbol_platform_preset_nodes_voting | default(false) }}
+        blockDisruptorSize: 8192
+
+{% if (symbol_platform_config_assembly == 'api' or symbol_platform_config_assembly == 'dual') %}
+throttlingBurst: {{ symbol_platform_preset_gateways_throttlingBurst | default(80) }}
+throttlingRate: {{ symbol_platform_preset_gateways_throttlingRate | default(60) }}
+{% endif %}
+
+logLevel: {{ symbol_platform_preset_logLevel | default('Error') }}

@@ -1,0 +1,26 @@
+---
+- name: Upgrade and Update repository
+  include_tasks: "_{{ ansible_os_family }}.yml"
+  tags:
+    - common
+
+- name: Uninstall needless packages
+  package:
+    name: "{{ remove_packages }}"
+    state: absent
+  tags:
+    - common
+
+- name: Install need packages
+  package:
+    name: "{{ add_packages }}"
+    state: latest
+  tags:
+    - common
+
+- name: Install Testinfra python package
+  pip:
+    name: pytest-testinfra
+    executable: pip3
+  tags:
+    - common

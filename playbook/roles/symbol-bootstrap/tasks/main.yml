@@ -1,0 +1,12 @@
+---
+- name: Install globally symbol-bootstrap ("{{ symbol_bootstrap_version }}")
+  npm:
+    name: symbol-bootstrap
+    version: "{{ symbol_bootstrap_version }}"
+    global: yes
+
+- name: Install globally symbol-cli ("{{ symbol_cli_version }}")
+  npm:
+    name: symbol-cli
+    version: "{{ symbol_cli_version }}"
+    global: yes

@@ -1,0 +1,94 @@
+---
+- name: Add symbol user ("{{ symbol_platform_username }}")
+  user:
+    name: "{{ symbol_platform_username }}"
+    password: "{{ symbol_platform_password | password_hash('sha512') }}"
+    groups:
+      - sudo
+      - docker
+    shell: /bin/bash
+    state: present
+  tags:
+    - symbol-platform
+
+- name: Make symbol-platform directory
+  become: yes
+  become_user: "{{ symbol_platform_username }}"
+  become_method: sudo
+  file:
+    path: "{{ symbol_platform_home_dir }}"
+    state: directory
+    mode: 0755
+  tags:
+    - symbol-platform
+
+- name: Create my-preset.yml
+  become: yes
+  become_user: "{{ symbol_platform_username }}"
+  become_method: sudo
+  template:
+    src: templates/my-preset.yml.j2
+    dest: "{{ symbol_platform_home_dir }}/my-preset.yml"
+  notify:
+    - Upgrade symbol-platform config
+    - Restart symbol-platform
+  tags:
+    - symbol-platform
+
+- name: Check target directory
+  become: yes
+  become_user: "{{ symbol_platform_username }}"
+  become_method: sudo
+  stat:
+    path: "{{ symbol_platform_home_dir }}/target"
+  register: target
+  tags:
+    - symbol-platform
+
+- name: Run symbol-bootstrap config preset={{ symbol_platform_config_preset }} assembly={{ symbol_platform_config_assembly }}
+  become: yes
+  become_user: "{{ symbol_platform_username }}"
+  become_method: sudo
+  shell: symbol-bootstrap config -p {{ symbol_platform_config_preset }} -a {{ symbol_platform_config_assembly }} -c my-preset.yml
+  args:
+    chdir: "{{ symbol_platform_home_dir }}"
+  when: not target.stat.exists
+  tags:
+    - symbol-platform
+
+- name: Check docker directory
+  become: yes
+  become_user: "{{ symbol_platform_username }}"
+  become_method: sudo
+  stat:
+    path: "{{ symbol_platform_home_dir }}/target/docker"
+  register: target_docker
+  tags:
+    - symbol-platform
+
+- name: Run symbol-bootstrap compose
+  become: yes
+  become_user: "{{ symbol_platform_username }}"
+  become_method: sudo
+  shell: symbol-bootstrap compose
+  args:
+    chdir: "{{ symbol_platform_home_dir }}"
+  when: not target_docker.stat.exists
+  tags:
+    - symbol-platform
+
+- name: Create symbol-platform.service
+  template:
+    src: templates/symbol-platform.service.j2
+    dest: /etc/systemd/system/symbol-platform.service
+  notify:
+    - Restart symbol-platform
+  tags:
+    - symbol-platform
+
+- name: Restart symbol-platform
+  systemd:
+    name: symbol-platform.service
+    daemon_reload: yes
+    enabled: yes
+    state: started

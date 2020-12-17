@@ -1,0 +1,13 @@
+---
+- name: Put test script
+  template:
+    src: templates/test.py.j2
+    dest: /tmp/test.py
+  tags:
+    - infratest
+
+- name: Run test script
+  command: py.test /tmp/test.py
+  changed_when: False
+  tags:
+    - infratest

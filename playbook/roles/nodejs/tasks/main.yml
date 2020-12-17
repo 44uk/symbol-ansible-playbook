@@ -1,0 +1,12 @@
+---
+- name: Add repository
+  include_tasks: "_{{ ansible_os_family }}.yml"
+  tags:
+    - nodejs
+
+- name: Install Node.js
+  package:
+    name: nodejs
+    state: latest
+  tags:
+    - nodejs

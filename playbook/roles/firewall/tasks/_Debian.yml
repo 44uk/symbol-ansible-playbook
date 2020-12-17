@@ -1,0 +1,13 @@
+---
+- name: Ensure firewall is enabled
+  ufw:
+    state: enabled
+    policy: deny
+
+- name: Allow Outbound TCP ports
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  with_items: "{{ allow_tcp_ports }}"
+  notify: Reload ufw

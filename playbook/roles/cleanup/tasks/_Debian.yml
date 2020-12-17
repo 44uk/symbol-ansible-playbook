@@ -1,0 +1,5 @@
+---
+- name: apt purge and autoremove
+  apt:
+    autoremove: yes
+    purge: yes

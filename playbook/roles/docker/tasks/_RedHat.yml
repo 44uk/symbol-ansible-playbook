@@ -1,0 +1,45 @@
+- name: Remove old Docker packages
+  package:
+    name: "{{ redhat.remove_packages }}"
+    state: absent
+  tags:
+    - docker
+
+- name: Install basic list of packages
+  package:
+    name: "{{ redhat.dep_packages }}"
+    state: present
+    update_cache: yes
+  tags:
+    - docker
+
+- name: Add repository
+  shell: "yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo"
+  args:
+    chdir: "/etc/yum.repos.d"
+    creates: docker-ce.repo
+  tags:
+    - docker
+
+- name: yum update
+  yum:
+    name: "*"
+    state: latest
+  tags:
+    - docker
+
+- name: Install Docker packages
+  package:
+    name: "{{ redhat.add_packages }}"
+    state: present
+  tags:
+    - docker
+
+- name: Add user to docker group
+  user:
+    name: "{{ ansible_env.USER }}"
+    groups:
+      - docker
+    append: yes
+  tags:
+    - docker

@@ -1,0 +1,3 @@
+---
+swapfile_path: /var/swapfile
+swapfile_size_mb: 4096

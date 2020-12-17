@@ -1,0 +1,44 @@
+---
+- name: Install docker
+  include_tasks: "_{{ ansible_os_family }}.yml"
+  tags:
+    - docker
+
+- name: mkdir /etc/docker
+  file:
+    path: /etc/docker
+    state: directory
+  tags:
+    - docker
+
+- name: Create group
+  group:
+    name: docker
+    state: present
+  tags:
+    - docker
+
+- name: Create daemon.json
+  copy:
+    src: files/daemon.json
+    dest: /etc/docker/daemon.json
+  notify:
+    - Restart docker
+  tags:
+    - docker
+
+- name: Ensure docker service is enabled
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+  tags:
+    - docker
+
+- name: Install docker-compose ({{ docker_compose.version }})
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/{{ docker_compose.version }}/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}"
+    dest: /usr/local/bin/docker-compose
+    mode: +x
+  tags:
+    - docker

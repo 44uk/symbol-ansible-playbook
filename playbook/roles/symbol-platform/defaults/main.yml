@@ -1,0 +1,17 @@
+---
+symbol_platform_preset_logLevel: Error
+# symbol_platform_preset_nodes_host:
+# symbol_platform_preset_nodes_friendlyName:
+
+symbol_platform_preset_nodes_harvesting: true
+symbol_platform_preset_nodes_voting: false
+
+symbol_platform_config_preset: testnet
+symbol_platform_config_assembly: dual
+
+# symbol_platform_preset_gateways_throttlingBurst: 160
+# symbol_platform_preset_gateways_throttlingRate: 120
+
+symbol_platform_home_dir: /home/symbol/platform
+symbol_platform_username: symbol
+symbol_platform_password: sekoya

@@ -1,0 +1,47 @@
+---
+- name: Check swapfile type ({{ swapfile_path }})
+  command: file {{ swapfile_path }}
+  register: swapfile
+  changed_when: False
+  tags:
+    - swapfile
+
+- name: Create swapfile ({{ swapfile_size_mb }}MB)
+  command: fallocate -l {{ swapfile_size_mb }}M {{ swapfile_path }}
+  when: swapfile.stdout.find('swap file') == -1
+  tags:
+    - swapfile
+
+- name: Change swapfile permissions
+  file:
+    path: "{{ swapfile_path }}"
+    owner: root
+    group: root
+    mode: 0600
+  when: swapfile.stdout.find('swap file') == -1
+  tags:
+    - swapfile
+
+- name: Make swapfile ({{ swapfile_path }})
+  command: mkswap {{ swapfile_path }}
+  when: swapfile.stdout.find('swap file') == -1
+  tags:
+    - swapfile
+
+- name: Mount swapfile ({{ swapfile_path }})
+  command: "swapon {{ swapfile_path }}"
+  when: ansible_swaptotal_mb < 1
+  tags:
+    - swapfile
+
+- name: Write swapfile entry in fstab
+  mount:
+    name: none
+    src: "{{ swapfile_path }}"
+    fstype: swap
+    opts: sw
+    passno: "0"
+    dump: "0"
+    state: present
+  tags:
+    - swapfile

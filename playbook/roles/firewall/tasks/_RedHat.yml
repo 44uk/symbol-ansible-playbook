@@ -1,0 +1,16 @@
+---
+# - name: Ensure firewall is enabled
+#   systemd:
+#     name: firewalld.service
+#     state: started
+#     daemon_reload: yes
+#     enabled: yes
+#
+# - name: Allow Outbound TCP ports
+#   firewalld:
+#     port: "{{ item }}/tcp"
+#     permanent: true
+#     immediate: true
+#     state: enabled
+#     zone: public
+#   with_items: "{{ allow_tcp_ports }}"

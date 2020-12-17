@@ -7,6 +7,7 @@ Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
   config.ssh.forward_agent = true
   config.vm.network "forwarded_port", guest: 3000, host: 3000
+  config.vm.network "forwarded_port", guest: 3001, host: 3001
   config.vm.network "forwarded_port", guest: 7200, host: 7200
   config.vm.network "forwarded_port", guest: 7202, host: 7202
   # config.vm.network "private_network", ip: "192.168.33.10"

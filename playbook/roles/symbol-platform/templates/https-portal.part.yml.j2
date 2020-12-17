@@ -1,0 +1,15 @@
+    https-portal:
+        container_name: https-portal
+        image: steveltn/https-portal:1
+        ports:
+            - "80:80"
+            - "{{ symbol_paltform_https_port | default(3001) }}:443"
+        volumes:
+            - ./ssl-certs:/var/lib/https-portal
+        environment:
+            WEBSOCKET: 'true'
+            STAGE: {{ symbol_paltform_https_stage | default('local') }}
+            DOMAINS: '{{ symbol_paltform_https_domains | default('localhost') }} -> http://rest-gateway:3000'
+        depends_on:
+            - rest-gateway
+        restart: 'on-failure:2'

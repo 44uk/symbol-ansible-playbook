@@ -7,8 +7,8 @@
     - swapfile
     - docker
     - nodejs
-    - symbol-bootstrap
     - firewall
     - cleanup
+    - symbol-bootstrap
     - symbol-platform
     - infratest

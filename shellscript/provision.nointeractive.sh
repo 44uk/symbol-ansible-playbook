@@ -7,7 +7,7 @@
 # -------------------------------------------------------------
 PRESET=testnet
 ASSEMBLY=dual
-FRIENDLY_NAME=niz-dual-1_0.3.0
+FRIENDLY_NAME=dual-1
 HOST=
 USE_HTTPS=
 AUDIT=
@@ -20,7 +20,7 @@ PSWD=sekoya # 変更を推奨
 # https://github.com/docker/compose/tags
 DOCKER_COMPOSE_VER=1.27.4
 # https://www.npmjs.com/package/symbol-bootstrap
-SYMBOL_BOOTSTRAP_VER=0.3.0
+SYMBOL_BOOTSTRAP_VER=0.3.1
 # -------------------------------------------------------------
 APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
 # -------------------------------------------------------------

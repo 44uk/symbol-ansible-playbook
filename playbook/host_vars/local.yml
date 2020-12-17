@@ -2,14 +2,16 @@
 symbol_platform_preset_logLevel: Debug
 symbol_platform_preset_nodes_host: 127.0.0.1
 symbol_platform_preset_nodes_friendlyName: node-on-local
+# symbol_platform_preset_nodeUseRemoteAccount: false
 
-symbol_platform_preset_nodes_harvesting: true
+# symbol_platform_preset_nodes_harvesting: false
 # symbol_platform_preset_nodes_voting: true
 
 # symbol_paltform_preset_nodes_mainPrivateKey:
 # symbol_paltform_preset_nodes_transportPrivateKey:
 # symbol_paltform_preset_nodes_remotePrivateKey:
 # symbol_paltform_preset_nodes_vrfPrivateKey:
+# symbol_paltform_preset_nodes_votingPrivateKey:
 
 # symbol_platform_config_preset: testnet
 symbol_platform_config_assembly: dual
@@ -20,3 +22,8 @@ symbol_platform_preset_gateways_throttlingRate: 240
 # symbol_platform_home_dir: /home/symbol/platform
 # symbol_platform_username: symbol
 # symbol_platform_password: sekoya
+
+# symbol_platform_https_on: true
+# symbol_platform_https_port: 3001
+# symbol_platform_https_stage: local
+# symbol_platform_https_domains: localhost

@@ -15,3 +15,8 @@ symbol_platform_config_assembly: dual
 symbol_platform_home_dir: /home/symbol/platform
 symbol_platform_username: symbol
 symbol_platform_password: sekoya
+
+symbol_platform_https_on: false
+# symbol_platform_https_port: 3001
+# symbol_platform_https_stage: local
+# symbol_platform_https_domains: localhost

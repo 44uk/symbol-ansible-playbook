@@ -7,7 +7,9 @@
     - swapfile
     - docker
     - nodejs
-    - firewall
+    # - firewall
+    # - monit
+    - sshd
     - cleanup
     - symbol-bootstrap
     - symbol-platform

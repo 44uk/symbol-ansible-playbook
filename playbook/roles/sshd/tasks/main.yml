@@ -1,0 +1,36 @@
+---
+- name: Safe sshd setting
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    backrefs: yes
+  with_items:
+    # - regexp: '^#?\s*Port'
+    #   line: 'Port {{ ssh_port | default(ansible_ssh_port) }}'
+    # - regexp: '^#?\s*PermitRootLogin'
+    #   line: 'PermitRootLogin no'
+    - regexp: '^#?\s*PermitEmptyPasswords'
+      line: 'PermitEmptyPasswords no'
+
+    - regexp: '#?\s*PasswordAuthentication'
+      line: 'PasswordAuthentication no'
+    - regexp: '#?\s*ChallengeResponseAuthentication'
+      line: 'ChallengeResponseAuthentication no'
+
+    - regexp: '^#?\s*PubkeyAuthentication'
+      line: 'PubkeyAuthentication yes'
+
+    - regexp: '^#?\s*AllowTcpForwarding'
+      line: 'AllowTcpForwarding no'
+    - regexp: '^#?\s*AllowStreamLocalForwarding'
+      line: 'AllowStreamLocalForwarding no'
+    - regexp: '^#?\s*GatewayPorts'
+      line: 'GatewayPorts no'
+    - regexp: '^#?\s*PermitTunnel'
+      line: 'PermitTunnel no'
+  notify:
+    - Restart sshd
+  tags:
+    - sshd

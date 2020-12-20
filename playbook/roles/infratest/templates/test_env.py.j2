@@ -5,7 +5,7 @@ def test_passwd_file(host):
     assert passwd.group == "root"
     assert passwd.mode == 0o644
 
-def test_swap_file(host):
+def test_swapfile(host):
     swapfile = host.file("/var/swapfile")
     assert swapfile.user == "root"
     assert swapfile.group == "root"
@@ -29,13 +29,31 @@ def test_docker_running_and_enabled(host):
 def test_docker_compose_is_installed(host):
     assert host.exists("docker-compose")
 
+def test_monit_is_installed(host):
+    monit = host.package("monit")
+    assert monit.is_installed
+
+def test_monit_running_and_enabled(host):
+    monit = host.service("monit")
+    assert monit.is_enabled
+    assert monit.is_running
+
+# def test_fail2ban_is_installed(host):
+#     fail2ban = host.package("fail2ban")
+#     assert fail2ban.is_installed
+#
+# def test_fail2ban_running_and_enabled(host):
+#     fail2ban = host.service("fail2ban")
+#     assert fail2ban.is_enabled
+#     assert fail2ban.is_running
+
 def test_symbol_bootstrap_is_installed(host):
     assert host.exists("symbol-bootstrap")
 
 def test_symbol_cli_is_installed(host):
     assert host.exists("symbol-cli")
 
-def test_symbol_platform_running_and_enabled(host):
-    symbol_platform = host.service("symbol-platform")
-    assert symbol_platform.is_enabled
-    assert symbol_platform.is_running
+# def test_symbol_platform_running_and_enabled(host):
+#     symbol_platform = host.service("symbol-platform")
+#     assert symbol_platform.is_enabled
+#     assert symbol_platform.is_running

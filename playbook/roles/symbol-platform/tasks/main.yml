@@ -30,7 +30,7 @@
     src: templates/my-preset.yml.j2
     dest: "{{ symbol_platform_home_dir }}/my-preset.yml"
   notify:
-    - Upgrade symbol-platform config
+    - Upgrade symbol-platform target
     - Restart symbol-platform
   tags:
     - symbol-platform
@@ -114,7 +114,7 @@
   tags:
     - symbol-platform
 
-- name: Start symbol-platform
+- name: Start symbol-platform service
   systemd:
     name: symbol-platform.service
     enabled: yes

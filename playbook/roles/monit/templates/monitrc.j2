@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+
+set daemon {{ monit_cycle | default(60) }}
+  with start delay {{ monit_start_delay | default(300) }}
+
+set log       {{ monit_log       | default('/var/log/monit.log') }}
+set pidfile   {{ monit_pidfile   | default('/var/run/monit.pid') }}
+set idfile    {{ monit_idfile    | default('/var/run/monit.id') }}
+set statefile {{ monit_statefile | default('/var/run/monit.state') }}
+
+set eventqueue
+  basedir {{ monit_eventqueue_dir | default('/var/lib/monit/events') }}
+  slots {{ monit_eventqueue_slots | default(100) }}
+
+set httpd port {{ monit_httpd_port | default(2812) }}
+  allow {{ monit_httpd_user | default('monit') }}:{{ monit_httpd_password | default('qi9edgFmgGpw') }}
+
+include /etc/monit/conf-enabled/*

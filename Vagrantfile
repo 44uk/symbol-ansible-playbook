@@ -24,8 +24,9 @@ Vagrant.configure("2") do |config|
   # end
 
   # config.vm.provision "ansible_local" do |ansible|
-  #   ansible.playbook = "/vagrant/playbook/site.yml"
-  #   ansible.inventory_path = '/vagrant/ansible/hosts'
+  #   ansible.install_mode = "pip"
+  #   ansible.playbook = "/vagrant/playbook/setup.yml"
+  #   ansible.inventory_path = '/vagrant/playbook/hosts'
   #   ansible.limit = 'localhost'
   # end
 end

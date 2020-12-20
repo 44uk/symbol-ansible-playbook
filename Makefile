@@ -8,8 +8,14 @@ destroy:
 provision:
 	@vagrant provision
 
-provision-vagrant:
-	@cd playbook && ansible-playbook -i hosts site.yml --limit vagrant
+vagrant-setup:
+	@cd playbook && ansible-playbook -i hosts setup.yml --limit vagrant
 
-provision-remote:
-	@cd playbook && ansible-playbook -i hosts site.yml --limit dual
+vagrant-update:
+	@cd playbook && ansible-playbook -i hosts update.yml --limit vagrant
+
+remote-setup:
+	@cd playbook && ansible-playbook -i hosts setup.yml --limit dual
+
+remote-update:
+	@cd playbook && ansible-playbook -i hosts update.yml --limit dual

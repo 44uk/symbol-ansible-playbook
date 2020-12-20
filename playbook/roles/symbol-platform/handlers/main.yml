@@ -6,7 +6,7 @@
     enabled: yes
     state: restarted
 
-- name: Upgrade symbol-platform config
+- name: Upgrade symbol-platform target
   become: yes
   become_user: "{{ symbol_platform_username }}"
   become_method: sudo
@@ -14,3 +14,10 @@
   args:
     chdir: "{{ symbol_platform_home_dir }}"
 
+- name: HealthCheck symbol-platform target
+  become: yes
+  become_user: "{{ symbol_platform_username }}"
+  become_method: sudo
+  shell: symbol-bootstrap healthCheck
+  args:
+    chdir: "{{ symbol_platform_home_dir }}"

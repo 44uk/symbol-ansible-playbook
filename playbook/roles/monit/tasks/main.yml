@@ -1,0 +1,44 @@
+---
+- name: Install monit
+  package:
+    name: "{{ add_packages }}"
+    state: present
+    update_cache: yes
+  tags:
+    - monit
+
+- name: Ensure monit service is enabled
+  systemd:
+    name: monit
+    state: started
+    enabled: yes
+  tags:
+    - monit
+
+- name: Replace monitrc
+  template:
+    src: templates/monitrc.j2
+    dest: /etc/monit/monitrc
+  notify:
+    - Restart monit
+  tags:
+    - monit
+
+- name: Put symbol-platform monitoring
+  template:
+    src:  templates/symbol-platform.j2
+    dest: /etc/monit/conf.d/symbol-platform
+  notify:
+    - Restart monit
+  tags:
+    - monit
+
+- name: Create link
+  file:
+    src:  /etc/monit/conf.d/symbol-platform
+    dest: /etc/monit/conf-enabled/symbol-platform
+    state: link
+  notify:
+    - Restart monit
+  tags:
+    - monit

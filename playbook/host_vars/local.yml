@@ -1,4 +1,7 @@
 ---
+symbol_bootstrap_version: ^0.3.0
+symbol_cli_version: latest
+
 symbol_platform_preset_logLevel: Debug
 symbol_platform_preset_nodes_host: 127.0.0.1
 symbol_platform_preset_nodes_friendlyName: node-on-local

@@ -114,6 +114,13 @@
   tags:
     - symbol-platform
 
+- name: Download and unarchive block data archive
+  unarchive:
+    url: "{{ symbol_platform_archive_url }}"
+    dest: "{{ symbol_platform_home_dir }}/archives"
+    remote_src: yes
+  when: symbol_platform_archive_url is defined
+
 - name: Start symbol-platform service
   systemd:
     name: symbol-platform.service

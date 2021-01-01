@@ -22,6 +22,7 @@ symbol_platform_config_assembly: dual
 symbol_platform_preset_gateways_throttlingBurst: 320
 symbol_platform_preset_gateways_throttlingRate: 240
 
+# symbol_platform_archive_url:
 # symbol_platform_home_dir: /home/symbol/platform
 # symbol_platform_username: symbol
 # symbol_platform_password: sekoya

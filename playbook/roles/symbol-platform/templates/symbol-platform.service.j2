@@ -1,15 +1,15 @@
 [Unit]
-Description=Symbol Platform Node Daemon
+Description=Symbol Platform Daemon
 After=docker.service
 [Service]
 Type=simple
-User={{ symbol_platform_username | default('root') }}
+User={{ symbol_platform_user_name | default('root') }}
 WorkingDirectory={{ symbol_platform_home_dir }}
 ExecStartPre=/usr/bin/symbol-bootstrap stop
-ExecStartPre=-/bin/rm target/nodes/api-node/data/broker.lock
-ExecStartPre=-/bin/rm target/nodes/api-node/data/recovery.lock
-ExecStartPre=-/bin/rm target/nodes/api-node/data/server.lock
-ExecStart=/usr/bin/symbol-bootstrap run --pullImages --healthCheck
+ExecStartPre=-/bin/rm target/nodes/node/data/broker.lock
+ExecStartPre=-/bin/rm target/nodes/node/data/recovery.lock
+ExecStartPre=-/bin/rm target/nodes/node/data/server.lock
+ExecStart=/usr/bin/symbol-bootstrap run
 ExecStop=/usr/bin/symbol-bootstrap stop
 TimeoutStartSec=180
 TimeoutStopSec=120

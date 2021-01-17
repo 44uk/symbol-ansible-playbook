@@ -1,0 +1,6 @@
+---
+certbot_admin_email: __your_email__@example.com
+certbot_certs:
+  - email: yukku0423+certbot@gmail.com
+    domains:
+      - niz-v4.44uk.net

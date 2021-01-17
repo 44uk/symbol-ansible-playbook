@@ -8,3 +8,20 @@
   yum:
     name: yum-utils
     state: latest
+
+- name: Enable EPEL Repository
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: present
+
+- name: amzn2-core.repo priority down
+  replace:
+    path: /etc/yum.repos.d/amzn2-core.repo
+    regexp: 'priority=10'
+    replace: 'priority=99'
+
+- name: amzn2-extras.repo priority down
+  replace:
+    path: /etc/yum.repos.d/amzn2-extras.repo
+    regexp: 'priority = 10'
+    replace: 'priority=99'

@@ -1,0 +1,14 @@
+---
+- hosts: all
+  become: yes
+  become_user: root
+  roles:
+    - common
+    - swapfile
+    - monit
+    - fail2ban
+    - nodejs
+    - docker
+    - symbol-bootstrap
+    - infratest
+    - cleanup

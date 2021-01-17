@@ -1,0 +1,6 @@
+[symbol-platform]
+accept  = 3001
+connect = 3000
+cert = /etc/letsencrypt/live/{{ item.domains | first | replace('*.', '') }}/fullchain.pem
+key  = /etc/letsencrypt/live/{{ item.domains | first | replace('*.', '') }}/privkey.pem
+TIMEOUTclose = 0

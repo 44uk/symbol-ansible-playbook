@@ -1,3 +1,4 @@
 ---
+mount_path: /
 swapfile_path: /var/swapfile
-swapfile_size_mb: 4096
+swapfile_rate: 0.5

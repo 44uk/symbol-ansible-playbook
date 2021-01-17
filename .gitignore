@@ -1,1 +1,5 @@
+playbook/files
+playbook/group_vars
+playbook/host_vars
 playbook/hosts
+targets/

@@ -1,13 +1,11 @@
-# local ansible_host=127.0.0.1 ansible_connection=local
 vagrant ansible_host=127.0.0.1
-# indigo-1 ansible_host=116.80.41.84 ansible_ssh_user=ubuntu
-# conoha-1 ansible_host=150.95.214.226 ansible_ssh_user=root
-# vultr-1 ansible_host=202.182.117.19 ansible_ssh_user=root
+# your_host ansible_host=aaa.bbb.ccc.ddd ansible_ssh_user=user ansible_ssh_private_key_file=path/to/key
+# your_host ansible_host=aaa.bbb.ccc.ddd ansible_ssh_user=user ansible_ssh_pass=password
 
-[vagrant]
+[vm]
 vagrant
 
-[vagrant:vars]
+[vm:vars]
 ansible_ssh_port=2222
 ansible_ssh_user=vagrant
 ansible_ssh_private_key_file=~/.vagrant.d/insecure_private_key
@@ -17,12 +15,9 @@ ansible_ssh_private_key_file=~/.vagrant.d/insecure_private_key
 [api]
 
 [dual]
-# indigo-1
-# conoha-1
-# vultr-1
+# your_host
 
 [dual:vars]
-# ansible_ssh_private_key_file=~/.ssh/indigo/private_key
 
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3

@@ -1,22 +1,11 @@
 ---
-symbol_platform_preset_logLevel: Error
-# symbol_platform_preset_nodes_host:
-# symbol_platform_preset_nodes_friendlyName:
-
-symbol_platform_preset_nodes_harvesting: true
-symbol_platform_preset_nodes_voting: false
-
 symbol_platform_config_preset: testnet
 symbol_platform_config_assembly: dual
+symbol_platform_config_pswd: sekoya
 
-# symbol_platform_preset_gateways_throttlingBurst: 160
-# symbol_platform_preset_gateways_throttlingRate: 120
+symbol_platform_user_name: symbol
+symbol_platform_user_pswd: sekoya
 
-symbol_platform_home_dir: /home/symbol/platform
-symbol_platform_username: symbol
-symbol_platform_password: sekoya
-
-symbol_platform_https_on: false
-# symbol_platform_https_port: 3001
-# symbol_platform_https_stage: local
-# symbol_platform_https_domains: localhost
+symbol_platform_renew_voting_key_day: "1"
+symbol_platform_renew_voting_key_hour: "5"
+symbol_platform_renew_voting_key_minute: "30"

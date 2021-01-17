@@ -1,0 +1,5 @@
+---
+swapfile_size_mb: "{{ (ansible_memtotal_mb * swapfile_rate) | int }}"
+
+mount: "{{ ansible_mounts | selectattr('mount', 'equalto', mount_path) | list | first }}"
+mount_size_total_mb: "{{ (mount.size_total / 1000 / 1000) | int }}"

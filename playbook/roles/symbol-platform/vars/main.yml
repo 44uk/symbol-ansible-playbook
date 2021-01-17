@@ -1,0 +1,3 @@
+---
+symbol_platform_config_custom: my-preset.yml
+symbol_platform_home_dir: /home/symbol/platform

@@ -1,0 +1,5 @@
+---
+- name: restart stunnel
+  systemd:
+    name: stunnel4
+    state: restarted

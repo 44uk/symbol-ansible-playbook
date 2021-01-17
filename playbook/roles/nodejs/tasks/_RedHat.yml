@@ -4,8 +4,8 @@
     path: /etc/yum.repos.d/nodesource-el7.repo
   register: source
 
-- name: Setup Node.js 14.x
-  shell: curl -sL https://rpm.nodesource.com/setup_14.x | bash -
+- name: Setup Node.js {{ nodejs_version }}.x
+  shell: "curl -sL https://rpm.nodesource.com/setup_{{ nodejs_version }}.x | bash -"
   args:
     warn: no
   when: not source.stat.exists

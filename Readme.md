@@ -1,19 +1,44 @@
-# Ansible Playbook for Symbol Platform (TESTNET / MAINNET)
+# Ansible Playbook for Symbol Platform
 
-- `Ubuntu 18.04 / 20.04`
-
-Not for Private Network Node. Specified for Public Network Node.
+- for `Ubuntu 20.04`
 
 
 ## Usage
 
-- Create and Edit `playbook/hosts`.
-- Run `make provision-remote`
+You need to prepare some files / variables before execute it.
 
 
-## on Vagrant
+### Host inventory
+
+Create and Edit `playbook/hosts`.
+
+See `playbook/hosts.sample` for example.
+
+
+### Host vars
+
+Create and Edit `playbook/host_vars/{INVENTORY_HOSTNAME}.yml`.
+
+See `playbook/host_vars/sample.yml` for example.
+
+
+### Host custom preset
+
+Create and Edit `playbook/files/{INVENTORY_HOSTNAME}/my-preset.yml`.
+
+See `playbook/files/sample/my-preset.yml` for example.
+
+
+## Run playbook
+
+```shell
+$ make remote-setup
+```
+
+
+### Vagrant
 
 ```shell
 $ make recreate
-$ make provision-vagrant
+$ make vm-setup
 ```

@@ -1,5 +1,5 @@
 ---
-- name: Safe sshd setting
+- name: Put secure sshd setting
   lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: "{{ item.regexp }}"
@@ -31,6 +31,6 @@
     - regexp: '^#?\s*PermitTunnel'
       line: 'PermitTunnel no'
   notify:
-    - Restart sshd
+    - restart sshd
   tags:
     - sshd

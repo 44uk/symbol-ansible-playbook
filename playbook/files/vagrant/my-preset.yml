@@ -1,0 +1,5 @@
+logLevel: Error
+nodes:
+  - friendlyName: vagrant.local
+    host: vagrant.local
+    voting: false

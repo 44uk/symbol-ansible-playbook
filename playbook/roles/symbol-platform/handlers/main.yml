@@ -1,23 +1,5 @@
 ---
-- name: Restart symbol-platform
+- name: restart symbol-platform
   systemd:
     name: symbol-platform.service
-    daemon_reload: yes
-    enabled: yes
     state: restarted
-
-- name: Upgrade symbol-platform target
-  become: yes
-  become_user: "{{ symbol_platform_username }}"
-  become_method: sudo
-  shell: symbol-bootstrap config -p {{ symbol_platform_config_preset }} -a {{ symbol_platform_config_assembly }} -c my-preset.yml --upgrade
-  args:
-    chdir: "{{ symbol_platform_home_dir }}"
-
-- name: HealthCheck symbol-platform target
-  become: yes
-  become_user: "{{ symbol_platform_username }}"
-  become_method: sudo
-  shell: symbol-bootstrap healthCheck
-  args:
-    chdir: "{{ symbol_platform_home_dir }}"

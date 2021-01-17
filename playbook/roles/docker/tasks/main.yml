@@ -23,7 +23,7 @@
     src: files/daemon.json
     dest: /etc/docker/daemon.json
   notify:
-    - Restart docker
+    - restart docker
   tags:
     - docker
 
@@ -32,6 +32,7 @@
     name: docker
     state: started
     enabled: yes
+    daemon_reload: yes
   tags:
     - docker
 
@@ -42,3 +43,4 @@
     mode: +x
   tags:
     - docker
+    - docker-compose

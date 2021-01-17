@@ -1,7 +1,7 @@
 ---
 - name: Put test script
   template:
-    src: templates/test_env.py.j2
+    src: files/test_env.py
     dest: /tmp/test_env.py
   tags:
     - infratest

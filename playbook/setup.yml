@@ -3,14 +3,5 @@
   become: yes
   become_user: root
   roles:
-    - common
-    - swapfile
-    - docker
-    - nodejs
-    # - firewall
-    # - monit
-    - sshd
-    - cleanup
-    - symbol-bootstrap
     - symbol-platform
     - infratest

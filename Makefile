@@ -1,6 +1,6 @@
 recreate:
 	@vagrant destroy -f
-	@vagrant up --provision
+	@vagrant up
 
 destroy:
 	@vagrant destroy -f
@@ -8,14 +8,14 @@ destroy:
 provision:
 	@vagrant provision
 
-vagrant-setup:
-	@cd playbook && ansible-playbook -i hosts setup.yml --limit vagrant
+vm-infra:
+	@vagrant up; cd playbook && ansible-playbook -i hosts infra.yml --limit vm
 
-vagrant-update:
-	@cd playbook && ansible-playbook -i hosts update.yml --limit vagrant
+vm-setup:
+	@vagrant up; cd playbook && ansible-playbook -i hosts full.yml --limit vm
 
 remote-setup:
-	@cd playbook && ansible-playbook -i hosts setup.yml --limit dual
+	@cd playbook && ansible-playbook -i hosts full.yml --limit all
 
-remote-update:
-	@cd playbook && ansible-playbook -i hosts update.yml --limit dual
+remote-https:
+	@cd playbook && ansible-playbook -i hosts https.yml --limit all

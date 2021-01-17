@@ -1,0 +1,4 @@
+nodes:
+  - friendlyName: __YOUR_FAVORITE_NAME__
+    host: __YOUR_OWNED_FQDN__
+    # voting: true

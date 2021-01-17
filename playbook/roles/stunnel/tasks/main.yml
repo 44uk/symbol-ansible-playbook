@@ -1,0 +1,41 @@
+---
+- name: Install stunnel
+  package:
+    name: "{{ add_packages }}"
+    state: present
+    update_cache: yes
+  tags:
+    - stunnel
+
+- name: Ensure stunnel service is enabled
+  systemd:
+    name: stunnel4
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  tags:
+    - stunnel
+
+- name: Create certs
+  include_tasks: create_cert.yml
+  with_items: "{{ certbot_certs }}"
+  loop_control:
+    loop_var: cert_item
+
+- name: Put config for {{ item.domains | first | replace('*.', '') }}
+  template:
+    src:  stunnel.conf.j2
+    dest: /etc/stunnel/{{ item.domains | first | replace('*.', '') }}.conf
+  with_items: "{{ certbot_certs }}"
+  notify:
+    - restart stunnel
+  tags:
+    - stunnel
+
+# - name: Add cron job for certbot renewal
+#   cron:
+#     name: Certbot renewal
+#     job:  certbot renew {{ certbot_auto_renew_options }}"
+#     user:   "{{ certbot_auto_renew_user }}"
+#     hour:   "{{ certbot_auto_renew_hour }}"
+#     minute: "{{ certbot_auto_renew_minute }}"

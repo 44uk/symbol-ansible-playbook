@@ -12,6 +12,7 @@
     name: monit
     state: started
     enabled: yes
+    daemon_reload: yes
   tags:
     - monit
 
@@ -20,25 +21,6 @@
     src: templates/monitrc.j2
     dest: /etc/monit/monitrc
   notify:
-    - Restart monit
-  tags:
-    - monit
-
-- name: Put symbol-platform monitoring
-  template:
-    src:  templates/symbol-platform.j2
-    dest: /etc/monit/conf.d/symbol-platform
-  notify:
-    - Restart monit
-  tags:
-    - monit
-
-- name: Create link
-  file:
-    src:  /etc/monit/conf.d/symbol-platform
-    dest: /etc/monit/conf-enabled/symbol-platform
-    state: link
-  notify:
-    - Restart monit
+    - restart monit
   tags:
     - monit

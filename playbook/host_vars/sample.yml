@@ -1,0 +1,20 @@
+---
+## Symbol Bootstrap option args
+symbol_platform_config_preset: testnet
+symbol_platform_config_assembly: dual
+
+## Symbol user
+# symbol_platform_user_pswd: sekoya
+# symbol_platform_user_name: symbol
+# symbol_platform_home_dir: /home/symbol/platform
+
+## symbol cli tools
+# symbol_bootstrap_version: latest
+# symbol_cli_version: latest
+
+## Create cert configurations
+# certbot_admin_email: __your_email__@example.com # Used if not `certbot_certs[].email``
+# certbot_certs:
+#   - email: __your_email__@example.com  # (Optional)
+#     domains:
+#       - your_owned_fqdn.example.com

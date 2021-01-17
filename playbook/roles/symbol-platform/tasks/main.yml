@@ -1,8 +1,16 @@
 ---
-- name: Add symbol user ("{{ symbol_platform_username }}")
+# TODO: 現状ではwarnがあっても0を返すので判断ができない
+# - name: Run symbol-bootstrap verify
+#   shell: symbol-bootstrap verify
+#   register: env_verify
+#   failed_when: env_verify.rc not in [0]
+#   tags:
+#     - symbol-platform
+
+- name: Add symbol user ("{{ symbol_platform_user_name }}")
   user:
-    name: "{{ symbol_platform_username }}"
-    password: "{{ symbol_platform_password | password_hash('sha512') }}"
+    name: "{{ symbol_platform_user_name }}"
+    password: "{{ symbol_platform_user_pswd | password_hash('sha512') }}"
     groups:
       - sudo
       - docker
@@ -11,9 +19,9 @@
   tags:
     - symbol-platform
 
-- name: Make symbol-platform directory
+- name: Make Symbol Platform directory
   become: yes
-  become_user: "{{ symbol_platform_username }}"
+  become_user: "{{ symbol_platform_user_name }}"
   become_method: sudo
   file:
     path: "{{ symbol_platform_home_dir }}"
@@ -24,84 +32,56 @@
 
 - name: Create my-preset.yml
   become: yes
-  become_user: "{{ symbol_platform_username }}"
+  become_user: "{{ symbol_platform_user_name }}"
   become_method: sudo
-  template:
-    src: templates/my-preset.yml.j2
-    dest: "{{ symbol_platform_home_dir }}/my-preset.yml"
+  copy:
+    src: "{{ inventory_hostname }}/{{ symbol_platform_config_custom }}"
+    dest: "{{ symbol_platform_home_dir }}/{{ symbol_platform_config_custom }}"
+    force: yes
   notify:
-    - Upgrade symbol-platform target
-    - Restart symbol-platform
+    - restart symbol-platform
   tags:
     - symbol-platform
 
 - name: Check target directory
   become: yes
-  become_user: "{{ symbol_platform_username }}"
+  become_user: "{{ symbol_platform_user_name }}"
   become_method: sudo
   stat:
     path: "{{ symbol_platform_home_dir }}/target"
-  register: target
+  register: target_dir
   tags:
     - symbol-platform
 
-- name: Run symbol-bootstrap config preset={{ symbol_platform_config_preset }} assembly={{ symbol_platform_config_assembly }}
+- name: Run symbol-bootstrap config -p {{ symbol_platform_config_preset }} -a {{ symbol_platform_config_assembly }} -c {{ symbol_platform_config_custom }} --password ****
   become: yes
-  become_user: "{{ symbol_platform_username }}"
+  become_user: "{{ symbol_platform_user_name }}"
   become_method: sudo
-  shell: symbol-bootstrap config -p {{ symbol_platform_config_preset }} -a {{ symbol_platform_config_assembly }} -c my-preset.yml
+  shell: symbol-bootstrap config -p {{ symbol_platform_config_preset }} -a {{ symbol_platform_config_assembly }} -c {{ symbol_platform_config_custom }} --password {{ symbol_platform_config_pswd }}
   args:
     chdir: "{{ symbol_platform_home_dir }}"
-  when: not target.stat.exists
+  when: not target_dir.stat.exists
   tags:
     - symbol-platform
 
 - name: Check docker directory
   become: yes
-  become_user: "{{ symbol_platform_username }}"
+  become_user: "{{ symbol_platform_user_name }}"
   become_method: sudo
   stat:
     path: "{{ symbol_platform_home_dir }}/target/docker"
-  register: target_docker
+  register: target_dir_docker
   tags:
     - symbol-platform
 
-- name: Run symbol-bootstrap compose
+- name: Run Symbol Platform compose
   become: yes
-  become_user: "{{ symbol_platform_username }}"
+  become_user: "{{ symbol_platform_user_name }}"
   become_method: sudo
-  shell: symbol-bootstrap compose
+  shell: symbol-bootstrap compose --noPassword
   args:
     chdir: "{{ symbol_platform_home_dir }}"
-  when: not target_docker.stat.exists
-  tags:
-    - symbol-platform
-
-- name: Create https-portal setting part file
-  template:
-    src: templates/https-portal.part.yml.j2
-    dest: "{{ symbol_platform_home_dir }}/https-portal.part.yml"
-  when: symbol_platform_https_on
-  tags:
-    - symbol-platform
-
-- name: Check https-portal setting part file already inserted
-  shell: grep -q "https-portal:" target/docker/docker-compose.yml
-  args:
-    chdir: "{{ symbol_platform_home_dir }}"
-  ignore_errors: yes
-  register: https_portal
-  when: symbol_platform_https_on
-  tags:
-    - symbol-platform
-
-- name: Append https-portal setting part file to docker-compose
-  shell: |
-    sed -i -e "$(grep -n services: target/docker/docker-compose.yml |
-      cut -d: -f1)r https-portal.part.yml" target/docker/docker-compose.yml
-  args:
-    chdir: "{{ symbol_platform_home_dir }}"
-  when: symbol_platform_https_on and https_portal.rc == 1
+  when: not target_dir_docker.stat.exists
   tags:
     - symbol-platform
 
@@ -110,12 +90,109 @@
     src: templates/symbol-platform.service.j2
     dest: /etc/systemd/system/symbol-platform.service
   notify:
-    - Restart symbol-platform
+    - restart symbol-platform
   tags:
     - symbol-platform
 
-- name: Start symbol-platform service
+- name: Ensure Symbol Platform service is enabled
   systemd:
-    name: symbol-platform.service
-    enabled: yes
+    name: symbol-platform
     state: started
+    enabled: yes
+    daemon_reload: yes
+  tags:
+    - symbol-platform
+
+# - name: Detect voting option
+#   become: yes
+#   become_user: "{{ symbol_platform_user_name }}"
+#   become_method: sudo
+#   shell: "grep -Ec \"voting:\\s+true\" {{ symbol_platform_config_custom }}"
+#   args:
+#     chdir: "{{ symbol_platform_home_dir }}"
+#   register: is_voting_true
+#   ignore_errors: True
+#   changed_when: False
+#   tags:
+#     - symbol-platform
+#
+# - block:
+#   - name: Put Symbol Platform Voting Key renewal script
+#     template:
+#       src:  updateVotingKeys.sh.j2
+#       dest: "{{ symbol_platform_home_dir }}/updateVotingKeys.sh"
+#       mode: u+rwx
+#   - name: Add cron job for Voting Key renewal
+#     cron:
+#       name: Symbol Platform Voting Key renewal
+#       job: "/bin/bash -l -c 'cd {{ symbol_platform_home_dir }} && ./updateVotingKeys.sh'"
+#       day:    "{{ symbol_platform_renew_voting_key_day }}"
+#       hour:   "{{ symbol_platform_renew_voting_key_hour }}"
+#       minute: "{{ symbol_platform_renew_voting_key_minute }}"
+#   when: is_voting_true.rc > 0
+#   tags:
+#     - symbol-platform
+
+- name: Gather package facts
+  package_facts:
+    manager: auto
+  tags:
+    - symbol-platform
+
+- block:
+  - name: Put Symbol Platform monitoring
+    template:
+      src:  monit/symbol-platform.j2
+      dest: /etc/monit/conf.d/symbol-platform
+  - name: Create link for symbol-platform
+    file:
+      src:  /etc/monit/conf.d/symbol-platform
+      dest: /etc/monit/conf-enabled/fail2ban
+      state: link
+    notify:
+      - restart monit
+  when: "'monit' in ansible_facts.packages"
+  tags:
+    - symbol-platform
+
+
+
+# - name: Create fast-sync.sh
+#   become: yes
+#   become_user: "{{ symbol_platform_user_name }}"
+#   become_method: sudo
+#   copy:
+#     src: "files/fast-sync.sh"
+#     dest: "{{ symbol_platform_home_dir }}/fast-sync.sh"
+#     mode: 0755
+#     force: yes
+#   tags:
+#     - symbol-platform
+
+# - name: Create https-portal setting part file
+#   template:
+#     src: templates/https-portal.part.yml.j2
+#     dest: "{{ symbol_platform_home_dir }}/https-portal.part.yml"
+#   when: symbol_platform_https_on
+#   tags:
+#     - symbol-platform
+
+# - name: Check https-portal setting part file already inserted
+#   shell: grep -q "https-portal:" target/docker/docker-compose.yml
+#   args:
+#     chdir: "{{ symbol_platform_home_dir }}"
+#   ignore_errors: yes
+#   register: https_portal
+#   when: symbol_platform_https_on
+#   tags:
+#     - symbol-platform
+
+# - name: Append https-portal setting part file to docker-compose
+#   shell: |
+#     sed -i -e "$(grep -n services: target/docker/docker-compose.yml |
+#       cut -d: -f1)r https-portal.part.yml" target/docker/docker-compose.yml
+#   args:
+#     chdir: "{{ symbol_platform_home_dir }}"
+#   when: symbol_platform_https_on and https_portal.rc == 1
+#   tags:
+#     - symbol-platform

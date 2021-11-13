@@ -1,0 +1,5 @@
+logLevel: Error
+nodes:
+  - friendlyName: niz.dual-1
+    host: sis-v4-1.44uk.net
+    voting: true

@@ -30,7 +30,7 @@
   tags:
     - symbol-platform
 
-- name: Create my-preset.yml
+- name: Create my-params.yml
   become: yes
   become_user: "{{ symbol_platform_user_name }}"
   become_method: sudo

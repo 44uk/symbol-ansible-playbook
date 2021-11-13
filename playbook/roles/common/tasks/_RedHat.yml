@@ -1,8 +1,8 @@
 ---
-- name: yum update
-  yum:
-    name: "*"
-    state: latest
+# - name: yum update
+#   yum:
+#     name: "*"
+#     state: latest
 
 - name: Install yum-utils
   yum:

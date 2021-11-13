@@ -1,8 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 Vagrant.configure("2") do |config|
-  # config.vm.box = "bento/amazonlinux-2"
   config.vm.box = "bento/ubuntu-20.04"
+  # config.vm.box_version = "202110.25.0"
 
   config.ssh.insert_key = false
   config.ssh.forward_agent = true

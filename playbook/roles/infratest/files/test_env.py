@@ -14,7 +14,7 @@ def test_swapfile(host):
 def test_nodejs_is_installed(host):
     nodejs = host.package('nodejs')
     assert nodejs.is_installed
-    assert nodejs.version.startswith('14')
+    assert nodejs.version.startswith('16')
 
 def test_docker_is_installed(host):
     docker = host.package('docker-ce')
